@@ -1,0 +1,63 @@
+#loading {
+    width:100%;
+    height: 100%;
+    padding:20%;
+}
+#printed{
+    float:left;
+    width: 100px;
+    font-size: xx-small;
+}
+h1{
+    width: 100%;
+    font-size: 3em;
+    text-align: center;
+    color: #000;
+}
+#orderItems{
+    width:95%;
+}
+#orderItems td, #orderItems th{
+    padding:.3em;
+}
+.empty {
+    border:0;
+}
+#orderItems tfoot{
+    font-weight: bold;
+}
+#orderItems thead th{
+    text-align: left;
+    background: #fff;
+    color:#000;
+}
+#orderItems tfoot td.summary{
+     //padding-left: 70%;
+     text-align: right;
+}
+
+.currency{
+    text-align: right;
+    // get rid of padding;
+    padding: 0;
+    
+}
+#header input, textarea {
+    font-weight: 800;
+    font-size:.8em;
+    border:0;
+    width:250px;
+}
+#header {
+    margin-top: .4em;
+}
+#instructions{
+    border-left:solid 2px #000;
+    margin:1em;
+    min-height:250px;
+    padding-left:1em;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+      font-style:italic;
+      font-weight: 400;
+} 

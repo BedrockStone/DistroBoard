@@ -25,7 +25,7 @@ module.exports = function (config) {
     exclude: [],
 
     client: {
-      captureConsole: false
+      captureConsole: true
     },
 
     /**
@@ -127,6 +127,10 @@ module.exports = function (config) {
       ChromeTravisCi: {
         base: 'Chrome',
         flags: ['--no-sandbox']
+      },
+      Chrome_with_debugging: {
+        base: 'Chrome',
+        flags: ['--remote-debugging-port=9222']
       }
     },
 

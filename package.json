@@ -1,7 +1,7 @@
 {
   "name": "angular-starter",
   "version": "6.0.0",
-  "description": "An Angular Webpack Starter kit featuring Angular (Router, Http, Forms, Services, Tests, E2E, Coverage), Karma, Protractor, Jasmine, Istanbul, TypeScript, and Webpack by AngularClass",
+  "description": "Bedrock Stone's Distribution Board",
   "keywords": [
     "angular",
     "angular2",
@@ -9,8 +9,8 @@
     "webpack",
     "typescript"
   ],
-  "author": "Patrick Stapleton <patrick@angularclass.com>",
-  "homepage": "https://github.com/AngularClass/angular-starter",
+  "author": "Elliott O'Hara",
+  "homepage": "",
   "license": "MIT",
   "scripts": {
     "build:aot:prod": "npm run clean:dist && npm run clean:aot && cross-env BUILD_AOT=1 npm run webpack -- --config config/webpack.prod.js  --progress --profile --bail",
@@ -72,20 +72,26 @@
   },
   "dependencies": {
     "@angular/animations": "~4.3.1",
+    "@angular/cdk": "^2.0.0-beta.8",
     "@angular/common": "~4.3.1",
     "@angular/compiler": "~4.3.1",
     "@angular/core": "~4.3.1",
+    "@angular/flex-layout": "^2.0.0-beta.8",
     "@angular/forms": "~4.3.1",
     "@angular/http": "~4.3.1",
+    "@angular/material": "^2.0.0-beta.8",
     "@angular/platform-browser": "~4.3.1",
     "@angular/platform-browser-dynamic": "~4.3.1",
     "@angular/platform-server": "~4.3.1",
     "@angular/router": "~4.3.1",
     "@angularclass/hmr": "~1.2.2",
     "@angularclass/hmr-loader": "^3.0.4",
+    "angular-material-icons": "^0.7.1",
     "core-js": "^2.4.1",
+    "hammerjs": "^2.0.8",
     "http-server": "^0.9.0",
     "ie-shim": "^0.1.0",
+    "material": "^0.1.1",
     "reflect-metadata": "^0.1.10",
     "rxjs": "~5.0.2",
     "zone.js": "0.8.14"
@@ -118,7 +124,7 @@
     "istanbul-instrumenter-loader": "2.0.0",
     "jasmine-core": "^2.5.2",
     "karma": "^1.6.0",
-    "karma-chrome-launcher": "^2.0.0",
+    "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-mocha-reporter": "^2.2.3",
@@ -127,7 +133,7 @@
     "karma-webpack": "^2.0.4",
     "ng-router-loader": "^2.1.0",
     "ngc-webpack": "^3.1.0",
-    "node-sass": "^4.5.2",
+    "node-sass": "^4.5.3",
     "npm-run-all": "^4.0.2",
     "optimize-js-plugin": "0.0.4",
     "parse5": "^3.0.2",
@@ -135,7 +141,7 @@
     "protractor": "^5.1.1",
     "raw-loader": "0.5.1",
     "rimraf": "~2.6.1",
-    "sass-loader": "^6.0.3",
+    "sass-loader": "^6.0.6",
     "script-ext-html-webpack-plugin": "^1.8.5",
     "source-map-loader": "^0.2.1",
     "string-replace-loader": "~1.2.0",
@@ -156,10 +162,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AngularClass/angular-starter.git"
+    "url": "https://github.com/BedrockStone/DistroCenter.git"
   },
   "bugs": {
-    "url": "https://github.com/AngularClass/angular-starter/issues"
+    "url": "https://github.com/BedrockStone/DistroCenter/issues"
   },
   "engines": {
     "node": ">= 4.2.1",

@@ -1,0 +1,22 @@
+{
+   "background": {
+      "persistent": false,
+      "scripts": [ "ScratchDeviceHost-Background.js" ]
+   },
+   "description": "Enables Scratch hardware extensions on Chrome. Requires the Scratch Device Plugin.",
+   "externally_connectable": {
+      "matches": [ "*://scratch.mit.edu/projects/*", "*://scratchx.org/*", "*://scratch.ly/*", "*://*.scratch.ly/*", "*://staging.scratch.mit.edu/*" ]
+   },
+   "icons": {
+      "128": "icon128.png",
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt9swoUtj61ftrieUn7K72QnJ8yEvissnWBmUWQJE1a2ygNsrEVL8aFRgzfk4gd9KZ6pk4N2BNC/0cq2RlwqcQ9EsmUWytpqkO0Pet8Zt1wHa55zIUOvwB/kBvXPbY7es4ATff98X+IoH+Z6WDwLbA4wyCRNhktai4Map24PZBEgXPg0qQoNHQ3eZfs9cmxn7Zv54gn1qs9asXhgl5sWokEVjkb1VNbdduZ6z5pKSxvLyI247+JhfmDjmjFX3ZK5aZNN7SbOWLPDMUg96tIm16XoOHAKBcFVO7HPkT+pEtlIRtxhnopVbIe48WO5OvOHXeYuvKJ9fu/fKCBhqra73SwIDAQAB",
+   "manifest_version": 2,
+   "name": "Scratch Device Plugin Helper",
+   "permissions": [ "nativeMessaging" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.2.1.0"
+}

@@ -6,3 +6,43 @@ html, body{
 a.active {
   background-color: gray;
 }
+
+table {
+  border-collapse: collapse;
+
+}
+table td, #orderItems th{
+    padding:.3em;
+    border: solid 1px #000;
+}
+table thead{
+    background: #CCC;
+    color: #FFF;
+}
+
+@media print {
+    nav{
+        display: none;
+    }
+    #printButton{
+      display: none;
+    }
+    html, body {
+        border: 1px solid white;
+        height: 99%;
+        page-break-after: avoid;
+        page-break-before: avoid;
+     }
+    ::-webkit-input-placeholder { /* WebKit browsers */
+      color: transparent;
+    } 
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: transparent;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: transparent;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: transparent;
+    }
+  }

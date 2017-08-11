@@ -1,0 +1,59 @@
+<div *ngIf="items">
+<h1>Bedrock Distro Board</h1>
+<b>Total Orders: {{ count }}</b>
+<table id="orders">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Yard</th>
+            <th>Cashier</th>
+            <th>Customer</th>
+            <th>Address</th>
+            <th>Rcpt Date</th>
+            <th>Ship Date</th>
+            <th>Items</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let order of items">
+            <td>
+                <a [routerLink]="['/orders/', order.TxnID]"> {{ order.SalesReceiptNumber }}</a>
+            </td>
+            <td>
+                {{ order.StoreNumber }}
+            </td>
+            <td>{{order.Cashier}}</td>
+            <td>
+                {{ order.ShippingInformationFullName }}
+                <span *ngIf="order.ShippingInformationCompanyName">
+                    <br />
+                    {{ order.ShippingInformationCompanyName }}
+                </span>
+                <br />
+                {{ order.ShippingInformationPhone}}
+            </td>
+            <td>
+                {{ order.ShippingInformationStreet }}<br />
+                {{ order.ShippingInformationCity }},
+                {{ order.ShippInformationPostalCode }}<br /></td>  
+            <td>{{ order.TimeModified | date:'short'}}</td>
+            <td>
+                {{ order.ShipDate | date:'shortDate'}}
+                <span *ngIf="order.ShipDate">
+                    <br />
+                    {{ order.ShipDate | date:'EEE'}}
+                </span>
+            </td>
+            <td>
+                <ul>
+                    <li *ngFor="let item of order.receiptItems" >
+                        {{ item.SalesReceiptItemQty }} {{ item.SalesReceiptItemUnitOfMeasure }} {{ item.SalesReceiptItemDesc1 }}
+                    </li>
+                </ul>
+            </td>
+            <td><button (click)="shipOrder(order)"> <md-icon>local_shipping</md-icon></button></td>
+        </tr>
+    </tbody>
+</table>
+</div>

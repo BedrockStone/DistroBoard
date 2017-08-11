@@ -26,8 +26,13 @@ import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
 import { AboutComponent } from './about';
+import { BoardComponent } from './board';
+import { OrderDetailComponent } from './board/order-detail';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import 'hammerjs';
+import { MaterialModule, MdNativeDateModule, MdDatepickerModule  } from '@angular/material';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';
@@ -53,6 +58,8 @@ type StoreType = {
     AppComponent,
     AboutComponent,
     HomeComponent,
+    BoardComponent,
+    OrderDetailComponent,
     NoContentComponent,
     XLargeDirective
   ],
@@ -63,6 +70,10 @@ type StoreType = {
     BrowserModule,
     FormsModule,
     HttpModule,
+    MaterialModule,
+    MdDatepickerModule,
+    MdNativeDateModule,
+    FlexLayoutModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
   ],
   /**

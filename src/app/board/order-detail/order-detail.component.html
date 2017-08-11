@@ -1,0 +1,94 @@
+<div id="loading" *ngIf="!order"><md-spinner></md-spinner></div>
+<div *ngIf="order">
+    <div id="header" class="containerX">
+        <div fxLayout="row">    
+            <div fxFlex="25%">
+                Order Time: {{ order.TimeModified | date:'medium'}}<br />
+                Store {{ order.StoreNumber}}
+            </div>
+            <div fxFlex="50%">
+                <h1>
+                    DELIVERY
+                    <button (click)="print()" id="printButton"><md-icon>print</md-icon></button>
+                </h1>
+            </div>
+            <div fxFlex="25%">
+                <b> Sales Receipt: {{ order.SalesReceiptNumber }}</b><br />
+                Cashier: {{ order.Cashier }}
+            </div>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex="35%">
+                <h2 id="shipDate">Ship Date: <input (change)="update();" [(ngModel)]="order.ShipDate" type="date" min="{{minDate}}" max="{{maxDate}}"/></h2>
+                <md-datepicker ng-model="order.ShipDate" md-placeholder="Ship Date"></md-datepicker>
+                <h2 id="jobNumber">Job Number: <input (change)="update();" [(ngModel)]="order.JobNumber" /></h2>
+                <div id="billTo" fxLayout>
+                    <div fxFlex="nogrow">Ship To:</div>
+                    <div fxFlex style="padding-left:1em;">
+                        <div *ngIf="order.ShippingInformationCompanyName">
+                            <input placeholder="Company Name" (change)="update();" [(ngModel)]="order.ShippingInformationCompanyName" /><br />
+                        </div>
+                        <input placeholder="Full Name" (change)="update();" [(ngModel)]="order.ShippingInformationFullName" /><br />
+                        <input placeholder="Phone Number" (change)="update();" [(ngModel)]="order.ShippingInformationPhone" /><br />
+                        <input placeholder="Street Address" (change)="update();" [(ngModel)]="order.ShippingInformationStreet" /><br />
+                        <input placeholder="City" (change)="update();" [(ngModel)]="order.ShippingInformationCity" />,
+                        <input style="width:55px;" placeholder="State" (change)="update();" [(ngModel)]="order.ShippingInformationState" /><br />
+                        <input placeholder="Zip Code" (change)="update();" [(ngModel)]="order.ShippingInformationPostalCode" />
+                        
+                    </div>
+                </div>
+            </div>
+            <div id="instructions" fxFlex>
+                <b>Special Instructions</b><br />
+                <textarea id="specialInstructions" rows="20" cols="30" (change)="update();" [(ngModel)]="order.SpecialInstructions"></textarea>
+            </div>
+        </div>
+    </div>
+    <table id='orderItems'>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>QTY</th>
+                <th>Price</th>
+                <th>Ext. Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of order.receiptItems">
+                <td>{{ item.SalesReceiptItemDesc1 }}</td>
+                <td>{{ item.SalesReceiptItemQty }} {{ item.SalesReceiptItemUnitOfMeasure }}</td>
+                <td>{{ item.SalesReceiptItemPrice | currency:'USD':true}}</td>
+                <td class='currency'>{{ item.SalesReceiptItemExtendedPrice | currency:'USD':true }}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="empty"></td><td class="empty"></td>
+                <td class="summary">Subtotal</td>
+                <td class="currency">{{ order.Subtotal | currency: 'USD': true}}</td>
+            <tr>
+                <td class="empty"></td><td class="empty"></td>
+                <td class="summary">{{ order.TaxCategory }} ({{ order.TaxPercentage }}%)</td>
+                <td class='currency'>{{ order.TaxAmount | currency: 'USD': true }}</td>
+            </tr>
+            <tr>
+                <td class="empty"></td><td class="empty"></td>
+                <td class="summary">Total</td>
+                <td class='currency'>{{ order.Total | currency:'USD':true}}</td>
+            </tr>
+            <tr>
+                <td class="empty"></td><td class="empty"></td>
+                <td class="summary">
+                    {{ order.TenderType }}
+                    <span *ngIf="order.TenderCreditCard01CardName">
+                        ({{ order.TenderCreditCard01CardName }})
+                    </span>
+
+                </td>
+                <td class='currency'>{{ order.Total | currency:'USD':true}}</td>
+            </tr>
+    </table>
+    <div id='footer' style="position: relative; padding: 1em;">
+        {{ order.Comments }}
+    </div>
+</div>
