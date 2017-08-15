@@ -8,7 +8,6 @@ import { DataResolver } from './app.resolver';
 
 export const ROUTES: Routes = [
   { path: '',      component: BoardComponent },
-  { path: 'detail', loadChildren: './+detail#DetailModule'},
   { path: 'board', component: BoardComponent},
   { path: 'orders/:txnID', component: OrderDetailComponent},
   { path: '**',    component: NoContentComponent },

@@ -21,15 +21,12 @@ import {
 import { ENV_PROVIDERS } from './environment';
 import { ROUTES } from './app.routes';
 // App is our top level component
- import { AppComponent } from './app.component';
+import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
-// import { AppState, InternalStateType } from './app.service';
-import { HomeComponent } from './home';
 import { AboutComponent } from './about';
 import { BoardComponent } from './board';
 import { OrderDetailComponent } from './board/order-detail';
 import { NoContentComponent } from './no-content';
-import { XLargeDirective } from './home/x-large';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs';
 import { MaterialModule,
@@ -61,11 +58,9 @@ type StoreType = {
   declarations: [
     AppComponent,
     AboutComponent,
-    HomeComponent,
     BoardComponent,
     OrderDetailComponent,
-    NoContentComponent,
-    XLargeDirective
+    NoContentComponent
   ],
   /**
    * Import Angular's modules.

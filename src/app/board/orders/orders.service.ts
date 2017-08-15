@@ -16,26 +16,12 @@ export class Orders {
   ) {
     this.items = {};
   }
-  // TODO: don't just expose the HTTP observable, let's hide polling, etc...
+  // TODO: there's no way to force an update here... consider exposing an observable
+  // of the Items from get so we can remove them as needed without waiting for the interval
   public getOrders(sort: string = 'TimeCreated'): Observable<any> {
-    let url = this.urlPrefix;
     return Observable.interval(this.pollInterval)
           .startWith(0)
-          .switchMap( () => this.http.get(url).map((res) => {
-      let results = res.json();
-      results.Items.forEach((item) => {
-            if (!item.receiptItems) {
-              item.receiptItems = [];
-              Object.keys(item.Lines).forEach((key) => {
-                  item.receiptItems.push(item.Lines[key]);
-              });
-            }
-            this.copyShippingInfoFromBillingInfo(item);
-            this.fixTenderType(item);
-        });
-      results.Items.forEach((r) => this.items[r.TxnID] = r);
-      return results;
-    }));
+          .switchMap( () => this.makeHttpRequest());
   }
   public getOrder(txnID: string): Observable<Order> {
     let fromCache = this.getFromCache(txnID);
@@ -53,6 +39,24 @@ export class Orders {
   public putOrder(order: any) {
     let url = this.urlPrefix + `${order.TxnID}/`;
     return this.http.put(url, order);
+  }
+  private makeHttpRequest() {
+    let url = this.urlPrefix;
+    return this.http.get(url).map((res) => {
+      let results = res.json();
+      results.Items.forEach((item) => {
+            if (!item.receiptItems) {
+              item.receiptItems = [];
+              Object.keys(item.Lines).forEach((key) => {
+                  item.receiptItems.push(item.Lines[key]);
+              });
+            }
+            this.copyShippingInfoFromBillingInfo(item);
+            this.fixTenderType(item);
+        });
+      results.Items.forEach((r) => this.items[r.TxnID] = r);
+      return results;
+    });
   }
   /// This method copies BillingInformation into shipping information
   private copyShippingInfoFromBillingInfo(order) {

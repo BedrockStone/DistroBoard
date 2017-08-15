@@ -22,11 +22,11 @@ export class BoardComponent implements OnInit, OnDestroy {
     protected sort: MdSort;
     protected displayedColumns = [
         'ID',
+        'ShipDate',
+        'RctDate',
         'Yard',
         'Cashier',
-        'RctDate',
         'Customer',
-        'ShipDate',
         'Items',
         'Action'];
     private poll: any;
@@ -43,8 +43,8 @@ export class BoardComponent implements OnInit, OnDestroy {
         if (!confirm('Are you sure you wish to mark this order as shipped?')) {
             return;
         }
-        this.orders.shipOrder(order).subscribe((x) => {
-            this.getData();
+        this.orders.shipOrder(order).subscribe( (x) => {
+            this.ordersDataSource.RemoveItem(order);
         });
     }
     private getData(): void {
