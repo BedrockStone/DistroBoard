@@ -1,5 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Orders } from './orders/orders.service';
+import { DataSource, CollectionViewer } from '@angular/cdk';
+import { Observable } from 'rxjs/Observable';
+import { MdSort } from '@angular/material';
+import { OrdersDataSource } from './orders/orders-data-source';
+
 @Component({
     moduleId: 'BoardComponent',
     selector: 'board',
@@ -10,13 +15,26 @@ import { Orders } from './orders/orders.service';
     styleUrls: ['board.component.scss']
 })
 export class BoardComponent implements OnInit, OnDestroy {
-    protected items: any;
+    protected items: any = [];
     protected count: Number;
+    protected ordersDataSource: OrdersDataSource | null;
+    @ViewChild(MdSort)
+    protected sort: MdSort;
+    protected displayedColumns = [
+        'ID',
+        'Yard',
+        'Cashier',
+        'RctDate',
+        'Customer',
+        'ShipDate',
+        'Items',
+        'Action'];
     private poll: any;
+
     constructor(private orders: Orders) { }
     public ngOnInit() {
+        this.ordersDataSource = new OrdersDataSource(this.orders, this.sort);
         this.getData();
-        this.poll = setInterval( () => this.getData(), 10000);
     }
     public ngOnDestroy(): void {
         clearInterval(this.poll);
@@ -30,8 +48,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         });
     }
     private getData(): void {
-        this.orders.getOrders(1).subscribe((data) => {
-           this.items = data.Items;
+        this.orders.getOrders().subscribe((data) => {
            this.count = data.Count;
         });
     }

@@ -2,22 +2,26 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Rx';
-// let getOrdersUrl = require('../../../../config/distroBoard').getOrdersUrl;
+import { Order } from './order';
+// import { OrdersResult } from './orders-result';
 
 @Injectable()
 export class Orders {
   private urlPrefix: string =
     'https://9rjbuh16l0.execute-api.us-east-1.amazonaws.com/prod/distro/shipping/';
   private items: any;
+  private pollInterval: number = 60 * 1000;
   constructor(
     public http: Http
   ) {
     this.items = {};
   }
-  public getOrders(storeNumber: Number) {
-    // TODO: throw if no store
+  // TODO: don't just expose the HTTP observable, let's hide polling, etc...
+  public getOrders(sort: string = 'TimeCreated'): Observable<any> {
     let url = this.urlPrefix;
-    return this.http.get(url).map((res) => {
+    return Observable.interval(this.pollInterval)
+          .startWith(0)
+          .switchMap( () => this.http.get(url).map((res) => {
       let results = res.json();
       results.Items.forEach((item) => {
             if (!item.receiptItems) {
@@ -27,17 +31,18 @@ export class Orders {
               });
             }
             this.copyShippingInfoFromBillingInfo(item);
+            this.fixTenderType(item);
         });
       results.Items.forEach((r) => this.items[r.TxnID] = r);
       return results;
-    });
+    }));
   }
-  public getOrder(txnID: string) {
+  public getOrder(txnID: string): Observable<Order> {
     let fromCache = this.getFromCache(txnID);
     if (fromCache) {
       return Observable.of(fromCache);
     }
-    return this.getOrders(1).map( (data) => {
+    return this.getOrders().map( (data) => {
       return this.getFromCache(txnID);
     });
   }
@@ -50,7 +55,7 @@ export class Orders {
     return this.http.put(url, order);
   }
   /// This method copies BillingInformation into shipping information
-  public copyShippingInfoFromBillingInfo(order) {
+  private copyShippingInfoFromBillingInfo(order) {
     /* ShippingInformation
     *  BillingInformation
     */
@@ -85,5 +90,9 @@ export class Orders {
   }
   private getFromCache(txnID: string) {
     return this.items[txnID];
+  }
+  private fixTenderType(order): any {
+    order.TenderType = order.TenderType.replace('Credit Car', 'Credit Card');
+    return order;
   }
 }

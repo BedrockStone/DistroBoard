@@ -21,9 +21,9 @@ import {
 import { ENV_PROVIDERS } from './environment';
 import { ROUTES } from './app.routes';
 // App is our top level component
-import { AppComponent } from './app.component';
+ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
-import { AppState, InternalStateType } from './app.service';
+// import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
 import { AboutComponent } from './about';
 import { BoardComponent } from './board';
@@ -32,7 +32,11 @@ import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs';
-import { MaterialModule, MdNativeDateModule, MdDatepickerModule  } from '@angular/material';
+import { MaterialModule,
+  MdNativeDateModule,
+  MdDatepickerModule,
+  MdTableModule  } from '@angular/material';
+import { CdkTableModule } from '@angular/cdk';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';
@@ -40,11 +44,11 @@ import '../styles/headings.css';
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
-  AppState
+  // AppState
 ];
 
 type StoreType = {
-  state: InternalStateType,
+  // state: InternalStateType,
   restoreInputValues: () => void,
   disposeOldHosts: () => void
 };
@@ -73,7 +77,9 @@ type StoreType = {
     MaterialModule,
     MdDatepickerModule,
     MdNativeDateModule,
+    MdTableModule,
     FlexLayoutModule,
+    CdkTableModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
   ],
   /**
@@ -87,19 +93,23 @@ type StoreType = {
 export class AppModule {
 
   constructor(
-    public appRef: ApplicationRef,
-    public appState: AppState
+    public appRef: ApplicationRef
+    // public appState: AppState
   ) {}
 
   public hmrOnInit(store: StoreType) {
+    /*
     if (!store || !store.state) {
       return;
     }
+    */
     console.log('HMR store', JSON.stringify(store, null, 2));
     /**
      * Set state
      */
+    /*
     this.appState._state = store.state;
+    */
     /**
      * Set input values
      */
@@ -109,8 +119,8 @@ export class AppModule {
     }
 
     this.appRef.tick();
-    delete store.state;
-    delete store.restoreInputValues;
+    // delete store.state;
+    // delete store.restoreInputValues;
   }
 
   public hmrOnDestroy(store: StoreType) {
@@ -118,8 +128,8 @@ export class AppModule {
     /**
      * Save state
      */
-    const state = this.appState._state;
-    store.state = state;
+    // const state = this.appState._state;
+    // store.state = state;
     /**
      * Recreate root elements
      */

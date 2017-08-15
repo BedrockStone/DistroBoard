@@ -24,13 +24,13 @@ export class AppComponent implements OnInit {
   public angularclassLogo = 'assets/img/angularclass-avatar.png';
   public name = 'Bedrock Distro Board';
   public url = '';
-
+  /*
   constructor(
-    public appState: AppState
-  ) {}
-
+    // public appState: AppState
+  ) { }
+  */
   public ngOnInit() {
-    console.log('Initial App State', this.appState.state);
+    // console.log('Initial App State', this.appState.state);
   }
 
 }

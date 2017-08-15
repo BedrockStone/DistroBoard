@@ -1,6 +1,65 @@
-<div *ngIf="items">
 <h1>Bedrock Distro Board</h1>
 <b>Total Orders: {{ count }}</b>
+<md-table #table [dataSource]="ordersDataSource" mdSort>
+    <ng-container cdkColumnDef="ID">
+        <md-header-cell *cdkHeaderCellDef md-sort-header="SalesReceiptNumber"> ID </md-header-cell>
+        <md-cell *cdkCellDef="let order"> 
+            <a [routerLink]="['/orders/', order.TxnID]"> {{ order.SalesReceiptNumber }}</a>
+        </md-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="Cashier" >
+        <md-header-cell *cdkHeaderCellDef md-sort-header="Cashier">Cashier</md-header-cell>
+        <md-cell *cdkCellDef="let order">{{order.Cashier}}</md-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="Yard">
+      <md-header-cell *cdkHeaderCellDef md-sort-header="StoreNumber"> Yard </md-header-cell>
+      <md-cell *cdkCellDef="let order"> {{order.StoreNumber}} </md-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="RctDate">
+      <md-header-cell *cdkHeaderCellDef md-sort-header="TimeCreated"> Rct Date </md-header-cell>
+      <md-cell *cdkCellDef="let order"> {{order.TimeCreated}} </md-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="ShipDate">
+      <md-header-cell *cdkHeaderCellDef md-sort-header="ShipDate"> Ship Date </md-header-cell>
+      <md-cell *cdkCellDef="let order"> {{order.ShipDate}} </md-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="Items">
+      <md-header-cell *cdkHeaderCellDef> Items </md-header-cell>
+      <md-cell *cdkCellDef="let order">
+          <ul>
+                <li *ngFor="let item of order.receiptItems" >
+                    {{ item.SalesReceiptItemQty }} {{ item.SalesReceiptItemUnitOfMeasure }} {{ item.SalesReceiptItemDesc1 }}
+                </li>
+            </ul>
+      </md-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="Customer">
+      <md-header-cell *cdkHeaderCellDef md-sort-header="ShippingInformationFullName"> Customer </md-header-cell>
+      <md-cell *cdkCellDef="let order">
+        {{ order.ShippingInformationFullName }}
+        <span *ngIf="order.ShippingInformationCompanyName">
+            <br />
+            {{ order.ShippingInformationCompanyName }}
+        </span>
+        <br />
+        {{ order.ShippingInformationPhone}}
+        {{ order.ShippingInformationStreet }}<br />
+        {{ order.ShippingInformationCity }},
+        {{ order.ShippInformationPostalCode }}
+      </md-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="Action">
+      <md-header-cell *cdkHeaderCellDef> </md-header-cell>
+      <md-cell *cdkCellDef="let order">
+          <button (click)="shipOrder(order)"> <md-icon>local_shipping</md-icon></button>
+      </md-cell>
+    </ng-container>
+
+    <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+    <md-row style="height:auto;vertical-align:top;" *cdkRowDef="let order; columns: displayedColumns;"></md-row>
+</md-table>
+
+<!--
 <table id="orders">
     <thead>
         <tr>
@@ -56,4 +115,4 @@
         </tr>
     </tbody>
 </table>
-</div>
+-->

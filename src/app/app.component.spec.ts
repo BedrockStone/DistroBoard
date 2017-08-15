@@ -10,7 +10,7 @@ import {
  * Load the implementations that should be tested
  */
 import { AppComponent } from './app.component';
-import { AppState } from './app.service';
+// import { AppState } from './app.service';
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -23,7 +23,7 @@ describe(`App`, () => {
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [AppState]
+      // providers: [AppState]
     })
     /**
      * Compile template and css
@@ -52,13 +52,4 @@ describe(`App`, () => {
   it(`should be @AngularClass`, () => {
     expect(comp.name).toEqual('Bedrock Distro Board');
   });
-
-  it('should log ngOnInit', () => {
-    spyOn(console, 'log');
-    expect(console.log).not.toHaveBeenCalled();
-
-    comp.ngOnInit();
-    expect(console.log).toHaveBeenCalled();
-  });
-
 });
