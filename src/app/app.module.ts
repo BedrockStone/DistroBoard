@@ -25,6 +25,7 @@ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AboutComponent } from './about';
 import { BoardComponent } from './board';
+import { ShippingBoardComponent } from './board/shipping-board';
 import { OrderDetailComponent } from './board/order-detail';
 import { NoContentComponent } from './no-content';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -60,6 +61,7 @@ type StoreType = {
     AboutComponent,
     BoardComponent,
     OrderDetailComponent,
+    ShippingBoardComponent,
     NoContentComponent
   ],
   /**

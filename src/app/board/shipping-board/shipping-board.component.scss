@@ -1,0 +1,16 @@
+#boardWrapper {
+    width:100%;
+    padding: 0 auto;
+    display:flex;
+    flex-direction:row
+}
+.day {
+    width:16%;
+    border:dotted 1px #000; 
+    height: 800px;
+    padding:0 .2em;
+}
+
+.day .header{
+    border-bottom: outset;
+}

@@ -53,6 +53,7 @@ export class Orders {
             }
             this.copyShippingInfoFromBillingInfo(item);
             this.fixTenderType(item);
+            this.fixStoreNumber(item);
         });
       results.Items.forEach((r) => this.items[r.TxnID] = r);
       return results;
@@ -92,11 +93,21 @@ export class Orders {
         order.BillingInformationLastName;
     }
   }
-  private getFromCache(txnID: string) {
+  private getFromCache(txnID: string): any {
     return this.items[txnID];
   }
   private fixTenderType(order): any {
-    order.TenderType = order.TenderType.replace('Credit Car', 'Credit Card');
+    order.TenderType = order.TenderType.replace('$Credit Car^', 'Credit Card');
+    return order;
+  }
+  private fixStoreNumber(order): any {
+    let maps = {
+      4: 3,
+      3: 4
+    };
+    if (Object.keys(maps).find( (key) => key === order.StoreNumber.toString())) {
+      order.StoreNumber = maps[order.StoreNumber];
+    }
     return order;
   }
 }

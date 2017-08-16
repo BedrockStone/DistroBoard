@@ -1,0 +1,24 @@
+<!--component html goes here -->
+<h1>Shipping Board</h1>
+<div id="boardWrapper" layout="row">
+<div class="day" flex="10" *ngFor="let day of Days">  
+  <div class="header" style="border-bottom:outset">
+    <h3 style="text-align:center;">{{ day.date | date:'EEE' }}</h3>
+    <h4 style="text-align:center;"> {{ day.date | date}} </h4>
+  </div>
+  <md-card *ngFor="let order of day.orders">
+        <md-card-title>R{{order.StoreNumber}}: {{ order.SalesReceiptNumber }}</md-card-title>
+        <md-card-content>
+        {{ order.ShippingInformationFullName}}<br />
+        {{ order.ShippingInformationPhone}} <br />
+        {{ order.ShippingInformationStreet }}<br />
+        {{ order.ShippInformationPostalCode }}
+        </md-card-content>
+      <md-card-actions layout="row" layout-align="end center">
+        <md-icon (click)="ship(order);">local_shipping</md-icon>
+        <md-icon [routerLink]="['/orders/', order.TxnID]">printer</md-icon>
+      </md-card-actions>
+    </md-card>
+</div>
+</div>
+    
