@@ -39,6 +39,8 @@
                 </div>
             </div>
             <div id="instructions" fxFlex>
+                <b>Truck Type:</b> {{order.ShipBy}}<br />
+                
                 <b>Special Instructions</b><br />
                 <textarea id="specialInstructions" rows="20" cols="30" (change)="update();" [(ngModel)]="order.SpecialInstructions"></textarea>
             </div>

@@ -9,20 +9,40 @@ import { Subject } from 'rxjs/Subject';
 export class OrdersDataSource extends DataSource<any> {
     public items: any[];
     private deleteSubject: Subject<any>;
+    private filterSubject: Subject<any>;
+    private filter: (para: any) => boolean;
     constructor(private orders: Orders, private sort: MdSort) {
         super();
         this.orders = orders;
         this.sort = sort;
         this.deleteSubject = new Subject();
+        this.filterSubject = new Subject();
+        this.filter = (x) => true;
     }
     public connect(): Observable<any[]> {
-        return Observable.merge(this.sort.mdSortChange, this.orders.getOrders(), this.deleteSubject)
-       .map( (results) => this.sortItems(results.Items));
+        return Observable.merge(this.sort.mdSortChange,
+            this.orders.getOrders(),
+            this.deleteSubject,
+            this.filterSubject
+        )
+        .map( (results) => {
+            let items = this.sortItems(results.Items);
+            return items.filter(this.filter);
+        });
     }
-    public RemoveItem(order: any) {
+    public RemoveItem(order: any): void {
         this.items = this.items.filter(( item ) => item.TxnID !== order.TxnID);
         // we already mutated items, just emit an event to the delete subject
         this.deleteSubject.next({});
+    }
+    public Filter(filterFunc: (param: any) => boolean): void {
+        // this.items = this.items.filter(predicate);
+        this.filter = filterFunc;
+        this.filterSubject.next({});
+    }
+    public RemoveFilter() {
+        this.filter = (x) => true;
+        this.filterSubject.next({});
     }
     public disconnect(): void {
         let x = 0;

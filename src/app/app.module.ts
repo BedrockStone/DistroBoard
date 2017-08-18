@@ -29,6 +29,8 @@ import { ShippingBoardComponent } from './board/shipping-board';
 import { OrderDetailComponent } from './board/order-detail';
 import { NoContentComponent } from './no-content';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MomentModule } from 'angular2-moment';
+
 import 'hammerjs';
 import { MaterialModule,
   MdNativeDateModule,
@@ -74,6 +76,7 @@ type StoreType = {
     MaterialModule,
     MdDatepickerModule,
     MdNativeDateModule,
+    MomentModule,
     MdTableModule,
     FlexLayoutModule,
     CdkTableModule,

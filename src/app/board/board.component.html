@@ -1,4 +1,15 @@
 <h1>Bedrock Distro Board</h1>
+<h3>Last Updated</h3>
+<div>
+    <span *ngFor="let item of lastUpdated.Items" >( R{{item.StoreNumber}}: {{item.LastUpdated | amCalendar}} )</span>
+</div>
+<br style="clear:left" />
+<div>
+<md-radio-group [(ngModel)]="allOrders">
+    <md-radio-button (click)="filter(true)" [value]="true">Show All unshipped orders</md-radio-button>
+    <md-radio-button (click)="filter(false)" [value]="false" >Show only unscheduled orders</md-radio-button>
+</md-radio-group>
+</div>
 <b>Total Orders: {{ count }}</b>
 <md-table #table [dataSource]="ordersDataSource" mdSort>
     <ng-container cdkColumnDef="ID">

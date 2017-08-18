@@ -8,7 +8,12 @@
   </div>
   <md-card *ngFor="let order of day.orders">
         <md-card-title>R{{order.StoreNumber}}: {{ order.SalesReceiptNumber }}</md-card-title>
+        <md-card-subtitle>{{order.ShipBy}}</md-card-subtitle>
         <md-card-content>
+        <span *ngIf="order.ShippingInformationCompanyName"> 
+            {{ order.ShippingInformationCompanyName}} <br />
+        </span>
+        
         {{ order.ShippingInformationFullName}}<br />
         {{ order.ShippingInformationPhone}} <br />
         {{ order.ShippingInformationStreet }}<br />
