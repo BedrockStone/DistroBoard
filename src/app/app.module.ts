@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgModule,
   ApplicationRef
@@ -28,6 +29,7 @@ import { BoardComponent } from './board';
 import { ShippingBoardComponent } from './board/shipping-board';
 import { OrderDetailComponent } from './board/order-detail';
 import { NoContentComponent } from './no-content';
+import { DeleteDialogComponent } from './shared/delete-dialog';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MomentModule } from 'angular2-moment';
 
@@ -64,7 +66,11 @@ type StoreType = {
     BoardComponent,
     OrderDetailComponent,
     ShippingBoardComponent,
-    NoContentComponent
+    NoContentComponent,
+    DeleteDialogComponent
+  ],
+  entryComponents: [
+    DeleteDialogComponent
   ],
   /**
    * Import Angular's modules.
@@ -80,6 +86,7 @@ type StoreType = {
     MdTableModule,
     FlexLayoutModule,
     CdkTableModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
   ],
   /**

@@ -10,6 +10,7 @@ import { DataResolver } from './app.resolver';
 export const ROUTES: Routes = [
   { path: '',      component: BoardComponent },
   { path: 'board', component: BoardComponent},
+  { path: 'shipping/:date', component: ShippingBoardComponent},
   { path: 'shipping', component: ShippingBoardComponent},
   { path: 'orders/:txnID', component: OrderDetailComponent},
   { path: '**',    component: NoContentComponent },

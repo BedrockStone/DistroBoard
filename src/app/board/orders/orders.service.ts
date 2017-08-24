@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 import { Order } from './order';
 // import { OrdersResult } from './orders-result';
 
@@ -11,17 +11,24 @@ export class Orders {
     'https://9rjbuh16l0.execute-api.us-east-1.amazonaws.com/prod/distro/shipping/';
   private items: any;
   private pollInterval: number = 60 * 1000;
+  private ordersResults: any;
+  private updateSubject: Subject<any>;
   constructor(
     public http: Http
   ) {
     this.items = {};
+    this.ordersResults = {
+      Count: 0,
+      Items: []
+    };
+    this.updateSubject = new Subject();
+    this.startPolling();
   }
-  // TODO: there's no way to force an update here... consider exposing an observable
-  // of the Items from get so we can remove them as needed without waiting for the interval
-  public getOrders(sort: string = 'TimeCreated'): Observable<any> {
-    return Observable.interval(this.pollInterval)
-          .startWith(0)
-          .switchMap( () => this.makeHttpRequest());
+  public getOrders(): Observable<any> {
+    return Observable.merge(Observable.of(this.ordersResults), this.updateSubject)
+      .map( (x) => {
+        return this.ordersResults;
+      });
   }
   // returns an observable containing information about last time orders where received from stores
   public getLastUpdated(): Observable<any> {
@@ -52,20 +59,47 @@ export class Orders {
   }
   public shipOrder(order: any): Observable<Response> {
     let shipUrl = 'https://9rjbuh16l0.execute-api.us-east-1.amazonaws.com/prod/distro/ship';
-    let deleteUrl = this.urlPrefix + `${order.TxnID}/`;
     order.ShippedDate = new Date().toISOString();
     // TODO: consider moving this logic to the API so we don't have to make to REST calls
     return this.http.put(shipUrl, order)
       .map( (results) => results.json())
-      .flatMap( (shipResults) => this.http.delete(deleteUrl))
-      .map( (deleteResults) => deleteResults.json());
+      .flatMap( (x) => this.deleteOrder(order))
+      .map( (deleteResults) => {
+        // manually remove the order for Items so we don't have to wait for the next
+        // poll interval
+        this.ordersResults.Items = this.ordersResults.Items.filter( (i) => i.TxnID !== order.TxnID);
+        this.updateSubject.next(true);
+        return deleteResults.json();
+      });
     ;
+  }
+  public removeOrder(order: any): Observable<any> {
+    return this.deleteOrder(order);
   }
   public putOrder(order: any) {
     let url = this.urlPrefix + `${order.TxnID}/`;
     // reset the StoreNumber so it's consistent in DB
     this.displayStoreNumber(order);
     return this.http.put(url, order);
+  }
+  private startPolling(): void {
+    Observable.interval(this.pollInterval)
+          .startWith(0)
+          .switchMap( () => this.makeHttpRequest())
+          .subscribe( (results) => {
+            // TODO: change update subject to Subject<Order> and send next properly
+            results.Items.forEach( (item) => {
+              if (!this.items[item.TxnID]) {
+                // we have a new item
+                this.items[item.TxnID] = item;
+                this.updateSubject.next(true);
+              }
+            });
+            if (JSON.stringify(this.ordersResults) !== JSON.stringify(results)) {
+              this.ordersResults = results;
+              this.updateSubject.next(true);
+            }
+          });
   }
   private makeHttpRequest() {
     let url = this.urlPrefix;
@@ -83,9 +117,12 @@ export class Orders {
             this.displayStoreNumber(item);
             this.setShipBy(item);
         });
-      results.Items.forEach((r) => this.items[r.TxnID] = r);
       return results;
     });
+  }
+  private deleteOrder(order): Observable<any> {
+    let deleteUrl = this.urlPrefix + `${order.TxnID}/`;
+    return this.http.delete(deleteUrl);
   }
   /// This method copies BillingInformation into shipping information
   private copyShippingInfoFromBillingInfo(order) {

@@ -1,5 +1,10 @@
 <!--component html goes here -->
 <h1>Shipping Board</h1>
+<div class="paging" layout="row">
+    <md-icon class="previous" (click)="previous()">keyboard_arrow_left</md-icon>
+    <a [routerLink]="['/shipping']">Today</a>
+    <md-icon class="next" (click)="next()">keyboard_arrow_right</md-icon>
+ </div>
 <div id="boardWrapper" layout="row">
 <div class="day" flex="10" *ngFor="let day of Days">  
   <div class="header" style="border-bottom:outset">

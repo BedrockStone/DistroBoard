@@ -1,43 +1,78 @@
 import { Component, OnInit } from '@angular/core';
+import { Schedule } from '../orders/schedule.service';
 import { Orders } from '../orders/orders.service';
+import { MdSnackBar } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DialogsService } from '../../shared/delete-dialog/delete-dialog.service';
+
 @Component({
     moduleId: 'ShippingBoardComponent',
     selector: 'shipping-board',
     templateUrl: 'shipping-board.component.html',
     styleUrls: ['shipping-board.component.scss'],
-    providers: [Orders]
+    providers: [Schedule, Orders, DialogsService]
 })
 export class ShippingBoardComponent implements OnInit {
     protected Days = [];
-    constructor(private ordersService: Orders) { }
+    protected Unscheduled = [];
+    private date: Date;
+    private lastRefresh: Date;
+    private MIN: number = 1000 * 60;
+    private HOUR: number = 60 * this.MIN;
+    constructor(
+        private scheduleService: Schedule,
+        private ordersService: Orders,
+        private router: Router,
+        private route: ActivatedRoute,
+        private dialogsService: DialogsService
+    ) { }
     public ngOnInit(): void {
-        let current = new Date();
-        let currentUTC = Date.UTC(current.getFullYear(), current.getMonth(), current.getDate());
-        current = new Date(currentUTC);
-        current.setHours(0);
-        let dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
-        'Thursday', 'Friday', 'Saturday'];
-        while (this.Days.length < 6) {
-            let day = {
-                orders: []
-            };
-            day['date'] = current;
-            if (current.getDay() !== 6) {
-                this.Days.push(day);
+        this.lastRefresh = new Date();
+        setTimeout(() => {
+            if (this.lastRefresh.getDate() === new Date().getDate()) {
+                window.location.reload(true);
             }
-            current = new Date(current.setTime( current.getTime() + 1 * 86400000 ));
-        }
-        this.ordersService.getOrders().subscribe( (orders) => {
-            this.Days.forEach( (day) => {
-                let expectedDate = day.date.getDate();
-                day.orders = orders.Items.filter( (order) => {
-                    return new Date(`${order.ShipDate}T00:00:00`).getDate() === expectedDate;
-                });
-            });
+        } , this.HOUR);
+
+        this.route.params.subscribe( (routeParams) => {
+            this.date = new Date();
+            if (routeParams['date']) {
+                this.date = new Date(routeParams['date']);
+            }
+            this.setDateToMidnight();
+            this.scheduleService.getSchedule(this.date)
+                .subscribe((schedule) => this.Days = schedule);
         });
+
+        this.scheduleService.getUnscheduled()
+        .subscribe( (results) => this.Unscheduled = results);
     }
     protected ship(order) {
-        this.ordersService.shipOrder(order).subscribe();
-        // todo, I don't think we need to remove the item
+        let that = this;
+        this.dialogsService.confirm('Confirm Shipping', 'Are you sure you wish to ship this item?')
+        .subscribe( (results) => {
+            if (results) {
+                that.ordersService.shipOrder(order).subscribe();
+            }
+        });
+    }
+    protected next(): void {
+        this.date.setDate(this.date.getDate() + 1);
+        this.router.navigate(['shipping', this.dateString()]);
+    }
+    protected previous(): void {
+        this.date.setDate(this.date.getDate() - 1);
+        this.router.navigate(['shipping', this.dateString()]);
+    }
+    private dateString(): string {
+        return this.date.getFullYear() + '-' +
+        (this.date.getMonth() + 1) + '-' +
+        this.date.getDate();
+    }
+    private setDateToMidnight(): void {
+        this.date.setHours(0);
+        this.date.setMinutes(0);
+        this.date.setSeconds(0);
+        this.date.setMilliseconds(0);
     }
 }
