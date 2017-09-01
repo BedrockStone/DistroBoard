@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Orders } from './orders/orders.service';
-import { DataSource, CollectionViewer } from '@angular/cdk';
+import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs/Observable';
 import { MdSort } from '@angular/material';
 import { OrdersDataSource } from './orders/orders-data-source';

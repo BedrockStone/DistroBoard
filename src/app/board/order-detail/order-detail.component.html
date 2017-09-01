@@ -20,7 +20,7 @@
         </div>
         <div fxLayout="row">
             <div fxFlex="35%">
-                <h2 id="shipDate">Ship Date: <input (change)="update();" [(ngModel)]="order.ShipDate" type="date" min="{{minDate}}" max="{{maxDate}}"/></h2>
+                <h2 id="shipDate">Ship Date: <input (change)="update();" [(ngModel)]="order.ShipDate" type="date" /></h2>
                 <md-datepicker ng-model="order.ShipDate" md-placeholder="Ship Date"></md-datepicker>
                 <h2 id="jobNumber">Job Number: <input (change)="update();" [(ngModel)]="order.JobNumber" /></h2>
                 <div id="billTo" fxLayout>

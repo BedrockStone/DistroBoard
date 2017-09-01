@@ -46,7 +46,6 @@ export class Schedule {
                     if (!shipDate) {
                         return false;
                     }
-                    debugger;
                     if (shipDate.indexOf(' ') === -1) {
                         shipDate = shipDate + 'T00:00:00';
                     }

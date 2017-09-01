@@ -29,7 +29,17 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.paramsSub = this.route.params.subscribe((params) => {
             this.txnID = params.txnID;
-            this.orders.getOrder(this.txnID).subscribe((o) => this.order = o);
+            this.orders.getOrder(this.txnID).subscribe((o) => {
+                // remove the time from shipdate
+                if ( !o ) {
+                    return;
+                }
+                debugger;
+                if (o.ShipDate && o.ShipDate.indexOf(' ') > -1) {
+                    o.ShipDate = o.ShipDate.substring(0, o.ShipDate.indexOf(' '));
+                }
+                this.order = o;
+            });
         });
     }
     public ngOnDestroy(): void {

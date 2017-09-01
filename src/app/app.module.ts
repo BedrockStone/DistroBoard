@@ -38,7 +38,7 @@ import { MaterialModule,
   MdNativeDateModule,
   MdDatepickerModule,
   MdTableModule  } from '@angular/material';
-import { CdkTableModule } from '@angular/cdk';
+import { CdkTableModule } from '@angular/cdk/table';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';

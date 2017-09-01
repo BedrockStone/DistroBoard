@@ -13,5 +13,6 @@ export interface Order {
     SpecialInstructions: string;
     JobNumber: string;
     receiptItems: any;
+    ShipDate: any;
 
 }
