@@ -2,7 +2,7 @@
 import { MdSort } from '@angular/material/material';
 import { Orders } from 'src/app/board/orders';
 import { Observable } from 'rxjs/Observable';
-import { DataSource } from '@angular/cdk';
+import { DataSource } from '@angular/cdk/table'
 import { EventEmitter } from '@angular/core/src/event_emitter';
 import { Subject } from 'rxjs/Subject';
 
