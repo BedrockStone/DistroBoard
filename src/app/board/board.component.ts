@@ -4,12 +4,14 @@ import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs/Observable';
 import { MdSort } from '@angular/material';
 import { OrdersDataSource } from './orders/orders-data-source';
+import { DialogsService } from '../shared/delete-dialog/delete-dialog.service';
 
 @Component({
     moduleId: 'BoardComponent',
     selector: 'board',
     providers: [
-    Orders
+    Orders,
+    DialogsService
     ],
     templateUrl: 'board.component.html',
     styleUrls: ['board.component.scss']
@@ -33,7 +35,9 @@ export class BoardComponent implements OnInit, OnDestroy {
         'Action'];
     private poll: any;
 
-    constructor(private orders: Orders) { }
+    constructor(
+        private orders: Orders,
+        private dialogsService: DialogsService) { }
     public ngOnInit() {
         this.ordersDataSource = new OrdersDataSource(this.orders, this.sort);
         this.getData();
@@ -45,12 +49,14 @@ export class BoardComponent implements OnInit, OnDestroy {
         clearInterval(this.poll);
     }
     public shipOrder(order): void {
-        if (!confirm('Are you sure you wish to mark this order as shipped?')) {
-            return;
-        }
-        this.orders.shipOrder(order).subscribe( (x) => {
-            this.ordersDataSource.RemoveItem(order);
-        });
+        this.dialogsService.confirm('Are you sure you wish to mark this order as shipped?')
+            .subscribe( (results) => {
+                if (results) {
+                    this.orders.shipOrder(order).subscribe( (x) => {
+                        this.ordersDataSource.RemoveItem(order);
+                    });
+                }
+            });
     }
     public filter(allOrders: boolean) {
         if (allOrders) {
