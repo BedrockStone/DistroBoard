@@ -41,7 +41,16 @@ export class Schedule {
             days.forEach( (day) => {
                 let expectedDate = day.date.getDate();
                 day.orders = orders.Items.filter( (order) => {
-                    return new Date(`${order.ShipDate}T00:00:00`).getDate() === expectedDate;
+                    // if it has a time, ignore it
+                    let shipDate = order.ShipDate;
+                    if (!shipDate) {
+                        return false;
+                    }
+                    debugger;
+                    if (shipDate.indexOf(' ') === -1) {
+                        shipDate = shipDate + 'T00:00:00';
+                    }
+                    return new Date(shipDate).getDate() === expectedDate;
                 });
             });
             return days;
