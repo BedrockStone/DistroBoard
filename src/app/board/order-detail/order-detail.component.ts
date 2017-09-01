@@ -34,7 +34,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
                 if ( !o ) {
                     return;
                 }
-                debugger;
                 if (o.ShipDate && o.ShipDate.indexOf(' ') > -1) {
                     o.ShipDate = o.ShipDate.substring(0, o.ShipDate.indexOf(' '));
                 }
