@@ -1,3 +1,5 @@
+import 'zone.js';
+import 'reflect-metadata';
 // TODO(gdi2290): switch to DLLs
 
 /**
